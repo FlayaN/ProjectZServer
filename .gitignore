@@ -1,0 +1,40 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+
+*.tlog
+*.obj
+*.exe
+*.ilk
+*.pdb
+*.log
+*.opensdf
+*.lastbuildstate
+*.idb
+*.sdf
+*.suo
+*.user
+*.vsp
+
+# XCode stuff
+
+*.mode1
+*.mode1v3
+*.mode2v3
+*.perspective
+*.perspectivev3
+*.pbxuser
+*.xcworkspace
+xcuserdata
+.DS_Store
