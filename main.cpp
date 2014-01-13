@@ -45,7 +45,11 @@ int main(int argc, char** argv)
 				{
 					socketV[i].timeout = SDL_GetTicks();
 					SDLNet_TCP_Recv(socketV[i].socket, tmp, 1400);
-					int num = tmp[0] - '0';
+
+					int num, id;
+					sscanf(tmp, "%d %d", &num, &id);
+
+					/*int num = tmp[0] - '0';
 					int j = 1;
 
 					while(tmp[j] >= '0' && tmp[j] <= '9')
@@ -54,9 +58,12 @@ int main(int argc, char** argv)
 						num += tmp[j] - '0';
 						j++;
 
-					}
+					}*/
 
-					s->process(num, i, tmp, socketV, sockets);
+					if(num != 1)
+						std::cout << "Num: " << num << " id: " << id << " i: " << i << std::endl;
+
+					s->process(num, id, i, tmp, socketV, sockets);
 				}
 			}
 		}
@@ -64,14 +71,16 @@ int main(int argc, char** argv)
 		//disconnect - timeout
 		for(int j = 0; j < socketV.size(); j++)
 		{
-			if(SDL_GetTicks() - socketV[j].timeout>5000)
+			//std::cout << "TMP: " << SDL_GetTicks() - socketV[j].timeout << std::endl;
+			if(SDL_GetTicks() - socketV[j].timeout > 5000)
 			{
-				sprintf(tmp, "2 %d\n", socketV[j].id);
+				std::cout << "PlayerLeave(timeout): " << std::endl;
+				sprintf(tmp, "2 %d \n", socketV[j].id);
 				s->sendToAll(tmp, socketV);
 				s->deleteSocket(j, socketV, sockets);
 			}
 		}
-		SDL_Delay(1);
+		//SDL_Delay(1);
 	}
 
 	for(int i = 0; i < socketV.size(); i++)

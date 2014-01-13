@@ -22,7 +22,7 @@ public:
 	~Server(void);
 	void recv(int type, int id, char buffer[1400]);
 	void join(TCPsocket, SDLNet_SocketSet&, std::vector<data>&);
-	void process(int, int, char[1400], std::vector<data>&, SDLNet_SocketSet&);
+	void process(int, int, int, char[1400], std::vector<data>&, SDLNet_SocketSet&);
 
 	void deleteSocket(int, std::vector<data>&, SDLNet_SocketSet&);
 

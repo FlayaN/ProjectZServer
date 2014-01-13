@@ -14,18 +14,17 @@ void Server::join(TCPsocket socket, SDLNet_SocketSet& sockets, std::vector<data>
 		socketV.push_back(data(socket, SDL_GetTicks(), curId));
 		playerNum++;
 		sprintf(buffer, "0 %d \n", curId);
+		std::cout << "PlayerJoin id: " << curId << std::endl;
 		curId++;
-
-		std::cout << "New Connection: " << curId << std::endl;
 	}
 	else
 	{
-		sprintf(buffer, "2 \n");
+		sprintf(buffer, "2 %d \n", curId);
 	}
 	SDLNet_TCP_Send(socket, buffer, strlen(buffer)+1);
 }
 
-void Server::process(int type, int id, char buff[1400], std::vector<data>& socketV, SDLNet_SocketSet& sockets)
+void Server::process(int type, int id, int loopI, char buff[1400], std::vector<data>& socketV, SDLNet_SocketSet& sockets)
 {
 	switch(type)
 	{
@@ -33,8 +32,9 @@ void Server::process(int type, int id, char buff[1400], std::vector<data>& socke
 		sendToAllExceptId(id, buff, socketV);
 		break;
 	case 2: //Disconnect
+		std::cout << "PlayerLeave id: " << id << std::endl;
 		sendToAllExceptId(id, buff, socketV);
-		deleteSocket(id, socketV, sockets);
+		deleteSocket(loopI, socketV, sockets);
 		break;
 	default:
 		std::cout << "Unknown packet id received" << std::endl;
@@ -44,11 +44,11 @@ void Server::process(int type, int id, char buff[1400], std::vector<data>& socke
 
 void Server::sendToAllExceptId(int id, char buff[1400], std::vector<data>& socketV)
 {
-	for(int k = 0; k < socketV.size(); k++)
+	for(auto sock : socketV)
 	{
-		if(k == id)
+		if(sock.id == id)
 			continue;
-		SDLNet_TCP_Send(socketV[k].socket, buff, strlen(buff)+1);
+		SDLNet_TCP_Send(sock.socket, buff, strlen(buff)+1);
 	}
 }
 
