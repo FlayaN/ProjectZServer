@@ -36,6 +36,10 @@ void Server::process(int type, int id, int loopI, char buff[1400], std::vector<d
 		sendToAllExceptId(id, buff, socketV);
 		deleteSocket(loopI, socketV, sockets);
 		break;
+	case 3: //Message
+		std::cout << "Message received" << std::endl;
+		sendToAll(buff, socketV);
+		break;
 	default:
 		std::cout << "Unknown packet id received" << std::endl;
 		break;
