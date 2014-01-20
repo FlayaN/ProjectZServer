@@ -37,7 +37,7 @@ void Server::process(int type, int id, int loopI, char buff[1400], std::vector<d
 		deleteSocket(loopI, socketV, sockets);
 		break;
 	case 3: //Message
-		std::cout << "Message received" << std::endl;
+		std::cout << "Message received: " << buff << std::endl;
 		sendToAll(buff, socketV);
 		break;
 	default:
@@ -60,7 +60,9 @@ void Server::sendToAll(char buff[1400], std::vector<data> socketV)
 {
 	for(auto s : socketV)
 	{
-		SDLNet_TCP_Send(s.socket, buff, strlen(buff)+1);
+		int len = strlen(buff)+1;
+		if(SDLNet_TCP_Send(s.socket, buff, len) < len)
+			std::cout << "ERROR SENDING DATATATATATA" << std::endl;
 	}
 }
 
