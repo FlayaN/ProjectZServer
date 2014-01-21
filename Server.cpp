@@ -60,9 +60,21 @@ void Server::sendToAll(char buff[1400], std::vector<data> socketV)
 {
 	for(auto s : socketV)
 	{
+		std::cout << "Sending | " << buff << " |to: " << s.id << std::endl;
+
 		int len = strlen(buff)+1;
+
+		std::cout << "Length of sending buffer: " << len << std::endl;
+
+		std::cout << "sdlnet_tcp_send Length of sending buffer: " << SDLNet_TCP_Send(s.socket, buff, len) << std::endl;
+		
+
+
+
+
+		/*int len = strlen(buff)+1;
 		if(SDLNet_TCP_Send(s.socket, buff, len) < len)
-			std::cout << "ERROR SENDING DATATATATATA" << std::endl;
+			std::cout << "ERROR SENDING DATATATATATA" << std::endl;*/
 	}
 }
 

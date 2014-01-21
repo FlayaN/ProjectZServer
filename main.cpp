@@ -72,7 +72,7 @@ int main(int argc, char** argv)
 		for(int j = 0; j < socketV.size(); j++)
 		{
 			//std::cout << "TMP: " << SDL_GetTicks() - socketV[j].timeout << std::endl;
-			if(SDL_GetTicks() - socketV[j].timeout > 5000)
+			if(SDL_GetTicks() - socketV[j].timeout > 10000)
 			{
 				std::cout << "PlayerLeave(timeout): " << std::endl;
 				sprintf(tmp, "2 %d \n", socketV[j].id);
