@@ -1,96 +1,120 @@
-#include <SDL.h>
-#include <SDL_net.h>
+#include <stdio.h>
+#include <string>
+#include <stdlib.h>
 #include <iostream>
-#include <vector>
-#include <cstring>
+#include <enet/enet.h>
 
-#include "Server.h"
 
-int main(int argc, char** argv)
+ENetEvent event;
+ENetHost* server;
+ENetPacket* packet;
+
+char buffer[1400];
+
+void sendToAllExceptId(int id)
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
-	SDLNet_Init();
-	//int curId = 0;
-	//int playerNum = 0;
-	SDL_Event event;
-	IPaddress ip;
-	SDLNet_ResolveHost(&ip, NULL, 1234);
-	std::vector<data> socketV;
-	char tmp[1400];
-	bool running = true;
-	SDLNet_SocketSet sockets = SDLNet_AllocSocketSet(10);
-	SDL_Window* win = SDL_CreateWindow("ProjectZ Server",  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_SWSURFACE);
-	SDL_HideWindow(win);
-	TCPsocket server = SDLNet_TCP_Open(&ip);
-	
-	Server* s = new Server();
-	while (running)
+	for(int i = 0; i < server->peerCount; i++)
 	{
-		while( SDL_PollEvent(&event)) 
+		if(id != std::atoi((char*)event.peer->data))
 		{
-			if(event.type == SDL_QUIT || event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)
-				running = false;
+			packet = enet_packet_create(event.packet->data, event.packet->dataLength, 0);
+			enet_peer_send(&server->peers[i], 0, packet);
+			enet_host_flush(server);
 		}
-		TCPsocket tmpSocket = SDLNet_TCP_Accept(server);
-		if(tmpSocket)
+	}
+}
+
+void sendToAll()
+{
+	for(int i = 0; i < server->peerCount; i++)
+	{
+		packet = enet_packet_create(event.packet->data, event.packet->dataLength, 0);
+		enet_peer_send(&server->peers[i], 0, packet);
+		enet_host_flush(server);
+	}
+}
+
+int  main(int argc, char ** argv)
+{
+	int i;
+	int curId = 0;
+	
+	if(enet_initialize() != 0)
+	{
+		printf("Could not initialize enet.");
+		return 0;
+	}
+
+	ENetAddress address;
+	address.host = ENET_HOST_ANY;
+	address.port = 1234;
+
+	server = enet_host_create(&address, 10, 2, 0, 0);
+
+	if(server == NULL)
+	{
+		printf("Could not start server.\n");
+		return 0;
+	}
+
+	
+	while(true) 
+	{
+		while(enet_host_service(server, &event, 1000) > 0)
 		{
-			s->join(tmpSocket, sockets, socketV);
-		}
-		//Check for incoming data
-		while(SDLNet_CheckSockets(sockets, 0) > 0)
-		{
-			for(int i = 0; i < socketV.size(); i++)
+			switch(event.type)
 			{
-				if(SDLNet_SocketReady(socketV[i].socket))
+				case ENET_EVENT_TYPE_CONNECT:
 				{
-					socketV[i].timeout = SDL_GetTicks();
-					SDLNet_TCP_Recv(socketV[i].socket, tmp, 1400);
+					printf ("A new client connected from %x:%u.\n", event.peer->address.host, event.peer->address.port);
+					
+					char idBuffer[1400];
+					sprintf(idBuffer, "%d", curId);
 
-					int num, id;
-					sscanf(tmp, "%d %d", &num, &id);
+					event.peer->data = idBuffer;
 
-					/*int num = tmp[0] - '0';
-					int j = 1;
+					sprintf(buffer, "0 %d", curId);
+					
+					packet = enet_packet_create(buffer, strlen(buffer)+1, ENET_PACKET_FLAG_RELIABLE);
+					
+					enet_peer_send(event.peer, 0, packet);
+					enet_host_flush(server);
+					curId++;
 
-					while(tmp[j] >= '0' && tmp[j] <= '9')
+					break;
+				}
+
+				case ENET_EVENT_TYPE_RECEIVE:
+				{
+					int type, id;
+					sscanf((char*)event.packet->data, "%d %d", &type, &id);
+
+					if(type != 1)
+						printf ("A packet of length %u containing %s was received from %s on channel %u.\n", event.packet -> dataLength, event.packet -> data, event.peer -> data, event.channelID);
+
+					switch (type)
 					{
-						num *= 10;
-						num += tmp[j] - '0';
-						j++;
+						case 3: //Message
+						{
+							sendToAll();
+							break;
+						}
+					}
 
-					}*/
+					enet_packet_destroy (event.packet);
 
-					if(num != 1)
-						std::cout << "Num: " << num << " id: " << id << " i: " << i << std::endl;
+					break;
+				}
 
-					s->process(num, id, i, tmp, socketV, sockets);
+				case ENET_EVENT_TYPE_DISCONNECT:
+				{
+					printf ("%s disconected.\n", event.peer->data);
+					event.peer->data = NULL;
+					break;
 				}
 			}
 		}
-
-		//disconnect - timeout
-		for(int j = 0; j < socketV.size(); j++)
-		{
-			//std::cout << "TMP: " << SDL_GetTicks() - socketV[j].timeout << std::endl;
-			if(SDL_GetTicks() - socketV[j].timeout > 10000)
-			{
-				std::cout << "PlayerLeave(timeout): " << std::endl;
-				sprintf(tmp, "2 %d \n", socketV[j].id);
-				s->sendToAll(tmp, socketV);
-				s->deleteSocket(j, socketV, sockets);
-			}
-		}
-		//SDL_Delay(1);
 	}
-
-	for(int i = 0; i < socketV.size(); i++)
-	{
-		SDLNet_TCP_Close(socketV[i].socket);
-	}
-
-	SDLNet_FreeSocketSet(sockets);
-	SDLNet_TCP_Close(server);
-	SDLNet_Quit();
-	SDL_Quit();
-	return 0;
+	enet_host_destroy(server);
+	enet_deinitialize();
 }
