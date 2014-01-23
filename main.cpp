@@ -89,8 +89,8 @@ int  main(int argc, char ** argv)
 					int type, id;
 					sscanf((char*)event.packet->data, "%d %d", &type, &id);
 
-					if(type != 1)
-						printf ("A packet of length %u containing %s was received from %s on channel %u.\n", event.packet -> dataLength, event.packet -> data, event.peer -> data, event.channelID);
+					//if(type != 1)
+					//	printf ("A packet of length %u containing %s was received from %d on channel %u.\n", event.packet->dataLength, event.packet->data, *(int*)event.peer->data, event.channelID);
 
 					switch (type)
 					{
