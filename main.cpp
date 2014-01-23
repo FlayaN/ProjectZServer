@@ -2,12 +2,15 @@
 #include <string>
 #include <stdlib.h>
 #include <iostream>
+#include <sstream>
+#include <cstdlib>
 #include <enet/enet.h>
 
 
 ENetEvent event;
 ENetHost* server;
 ENetPacket* packet;
+int curId = 0;
 
 char buffer[1400];
 
@@ -15,29 +18,29 @@ void sendToAllExceptId(int id)
 {
 	for(int i = 0; i < server->peerCount; i++)
 	{
-		if(id != std::atoi((char*)event.peer->data))
+		if(server->peers[i].data != nullptr)
 		{
-			packet = enet_packet_create(event.packet->data, event.packet->dataLength, 0);
-			enet_peer_send(&server->peers[i], 0, packet);
-			enet_host_flush(server);
+			if(id != *(int*)server->peers[i].data)
+			{
+				packet = enet_packet_create(event.packet->data, event.packet->dataLength, 0);
+				enet_peer_send(&server->peers[i], 0, packet);
+				enet_host_flush(server);
+			}
 		}
 	}
 }
 
 void sendToAll()
 {
-	for(int i = 0; i < server->peerCount; i++)
-	{
-		packet = enet_packet_create(event.packet->data, event.packet->dataLength, 0);
-		enet_peer_send(&server->peers[i], 0, packet);
-		enet_host_flush(server);
-	}
+	packet = enet_packet_create(event.packet->data, event.packet->dataLength, 0);
+	enet_host_broadcast(server, 0, packet);
+	enet_host_flush(server);
 }
 
 int  main(int argc, char ** argv)
 {
 	int i;
-	int curId = 0;
+	
 	
 	if(enet_initialize() != 0)
 	{
@@ -67,11 +70,8 @@ int  main(int argc, char ** argv)
 				case ENET_EVENT_TYPE_CONNECT:
 				{
 					printf ("A new client connected from %x:%u.\n", event.peer->address.host, event.peer->address.port);
-					
-					char idBuffer[1400];
-					sprintf(idBuffer, "%d", curId);
 
-					event.peer->data = idBuffer;
+					event.peer->data = new int(curId);
 
 					sprintf(buffer, "0 %d", curId);
 					
@@ -94,6 +94,11 @@ int  main(int argc, char ** argv)
 
 					switch (type)
 					{
+						case 1: //Data
+						{
+							sendToAllExceptId(id);
+							break;
+						}
 						case 3: //Message
 						{
 							sendToAll();
@@ -108,8 +113,17 @@ int  main(int argc, char ** argv)
 
 				case ENET_EVENT_TYPE_DISCONNECT:
 				{
-					printf ("%s disconected.\n", event.peer->data);
+					printf ("%d disconected.\n", *(int*)event.peer->data);
+
+					for(int i = 0; i < server->peerCount; i++)
+					{
+						sprintf(buffer, "2 %d", *(int*)event.peer->data);
+						packet = enet_packet_create(buffer, strlen(buffer)+1, ENET_PACKET_FLAG_RELIABLE);
+						enet_peer_send(&server->peers[i], 0, packet);
+						enet_host_flush(server);
+					}
 					event.peer->data = NULL;
+
 					break;
 				}
 			}
