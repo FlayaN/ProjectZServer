@@ -1,0 +1,317 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		975C84861892683B00A29D8D /* libenet.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 975C84851892683B00A29D8D /* libenet.2.dylib */; };
+		97643D8418927EA9003F320E /* main.cpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9766953918437EBE004E8ED6 /* main.cpp */; };
+		9766954118437EBE004E8ED6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953918437EBE004E8ED6 /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		974B695218927A2800910756 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				97643D8418927EA9003F320E /* main.cpp in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		975C81B31892561000A29D8D /* callbacks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = callbacks.h; sourceTree = "<group>"; };
+		975C81B41892561000A29D8D /* enet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = enet.h; sourceTree = "<group>"; };
+		975C81B51892561000A29D8D /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = list.h; sourceTree = "<group>"; };
+		975C81B61892561000A29D8D /* protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = protocol.h; sourceTree = "<group>"; };
+		975C81B71892561000A29D8D /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = time.h; sourceTree = "<group>"; };
+		975C81B81892561000A29D8D /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		975C81B91892561000A29D8D /* unix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unix.h; sourceTree = "<group>"; };
+		975C81BA1892561000A29D8D /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		975C81BB1892561000A29D8D /* win32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = win32.h; sourceTree = "<group>"; };
+		975C81BD1892561000A29D8D /* enet.lib */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = enet.lib; sourceTree = "<group>"; };
+		975C84851892683B00A29D8D /* libenet.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libenet.2.dylib; path = lib/enet/lib/libenet.2.dylib; sourceTree = "<group>"; };
+		97643D85189280C2003F320E /* ProjectZServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectZServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9766953918437EBE004E8ED6 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9766951518437968004E8ED6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				975C84861892683B00A29D8D /* libenet.2.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		975C81AC1892561000A29D8D /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				975C81B01892561000A29D8D /* enet */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		975C81B01892561000A29D8D /* enet */ = {
+			isa = PBXGroup;
+			children = (
+				975C81B11892561000A29D8D /* include */,
+				975C81BC1892561000A29D8D /* lib */,
+			);
+			path = enet;
+			sourceTree = "<group>";
+		};
+		975C81B11892561000A29D8D /* include */ = {
+			isa = PBXGroup;
+			children = (
+				975C81B21892561000A29D8D /* enet */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		975C81B21892561000A29D8D /* enet */ = {
+			isa = PBXGroup;
+			children = (
+				975C81B31892561000A29D8D /* callbacks.h */,
+				975C81B41892561000A29D8D /* enet.h */,
+				975C81B51892561000A29D8D /* list.h */,
+				975C81B61892561000A29D8D /* protocol.h */,
+				975C81B71892561000A29D8D /* time.h */,
+				975C81B81892561000A29D8D /* types.h */,
+				975C81B91892561000A29D8D /* unix.h */,
+				975C81BA1892561000A29D8D /* utility.h */,
+				975C81BB1892561000A29D8D /* win32.h */,
+			);
+			path = enet;
+			sourceTree = "<group>";
+		};
+		975C81BC1892561000A29D8D /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				975C81BD1892561000A29D8D /* enet.lib */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
+		9766950D18437968004E8ED6 = {
+			isa = PBXGroup;
+			children = (
+				975C84851892683B00A29D8D /* libenet.2.dylib */,
+				9766953918437EBE004E8ED6 /* main.cpp */,
+				975C81AC1892561000A29D8D /* lib */,
+				97643D85189280C2003F320E /* ProjectZServer.app */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9766951718437968004E8ED6 /* ProjectZServer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9766952018437968004E8ED6 /* Build configuration list for PBXNativeTarget "ProjectZServer" */;
+			buildPhases = (
+				9766951418437968004E8ED6 /* Sources */,
+				9766951518437968004E8ED6 /* Frameworks */,
+				974B695218927A2800910756 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ProjectZServer;
+			productName = "Project Z";
+			productReference = 97643D85189280C2003F320E /* ProjectZServer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9766950F18437968004E8ED6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0500;
+				ORGANIZATIONNAME = "Hannes Feldt";
+			};
+			buildConfigurationList = 9766951218437968004E8ED6 /* Build configuration list for PBXProject "ProjectZServer" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9766950D18437968004E8ED6;
+			productRefGroup = 9766950D18437968004E8ED6;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9766951718437968004E8ED6 /* ProjectZServer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9766951418437968004E8ED6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9766954118437EBE004E8ED6 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		9766951E18437968004E8ED6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9766951F18437968004E8ED6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		9766952118437968004E8ED6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					/opt/local/include,
+					/usr/include,
+					/usr/local/include,
+					"$(SDK_DIR)/usr/include/libxml2",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/opt/local/lib,
+					/usr/lib,
+					/Users/hannesfeldt/Documents/ProjectZ/lib/enet/lib,
+					/Users/hannesfeldt/Documents/ProjectZ/lib/glew/lib/x64,
+					/Users/hannesfeldt/Documents/ProjectZ/lib/glew/lib/x86,
+					"/Users/hannesfeldt/Documents/ProjectZ/lib/sdl-2.0.1/lib/x64",
+					"/Users/hannesfeldt/Documents/ProjectZ/lib/sdl-2.0.1/lib/x86",
+					/Users/hannesfeldt/Documents/ProjectZ/lib/glew/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = (
+					"-framework",
+					cocoa,
+					"-framework",
+					SDL2,
+				);
+				PRODUCT_NAME = ProjectZServer;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Debug;
+		};
+		9766952218437968004E8ED6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks,
+					"$(LOCAL_LIBRARY_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					/opt/local/include,
+					/usr/include,
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/opt/local/lib,
+					/usr/lib,
+					/Users/hannesfeldt/Documents/ProjectZ/lib/enet/lib,
+					/Users/hannesfeldt/Documents/ProjectZ/lib/glew/lib/x64,
+					/Users/hannesfeldt/Documents/ProjectZ/lib/glew/lib/x86,
+					"/Users/hannesfeldt/Documents/ProjectZ/lib/sdl-2.0.1/lib/x64",
+					"/Users/hannesfeldt/Documents/ProjectZ/lib/sdl-2.0.1/lib/x86",
+					/Users/hannesfeldt/Documents/ProjectZ/lib/glew/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = (
+					"-framework",
+					cocoa,
+					"-framework",
+					SDL2,
+				);
+				PRODUCT_NAME = ProjectZServer;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9766951218437968004E8ED6 /* Build configuration list for PBXProject "ProjectZServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9766951E18437968004E8ED6 /* Debug */,
+				9766951F18437968004E8ED6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9766952018437968004E8ED6 /* Build configuration list for PBXNativeTarget "ProjectZServer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9766952118437968004E8ED6 /* Debug */,
+				9766952218437968004E8ED6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9766950F18437968004E8ED6 /* Project object */;
+}
