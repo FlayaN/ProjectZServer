@@ -4,8 +4,9 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
-#include <enet/enet.h>
 
+#include <enet/enet.h>
+#include <curl/curl.h>
 
 ENetEvent event;
 ENetHost* server;
@@ -37,10 +38,34 @@ void sendToAll()
 	enet_host_flush(server);
 }
 
+size_t writeToString(void *ptr, size_t size, size_t count, void *stream)
+{
+	((std::string*)stream)->append((char*)ptr, 0, size * count);
+	return size * count;
+}
+
 int  main(int argc, char ** argv)
 {
-	int i;
+	char* result;
+	CURL *curl;
+	CURLcode res;
+	std::string response;
+	curl = curl_easy_init();
 	
+	if(curl)
+	{
+		curl_easy_setopt(curl, CURLOPT_URL, "http://www.icanhazip.com/");
+		
+		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeToString);
+		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
+		
+		res = curl_easy_perform(curl);
+		curl_easy_cleanup(curl);
+	}
+
+	std::cout << "Ip is: " << response << std::endl;
+
+	int i;
 	
 	if(enet_initialize() != 0)
 	{
