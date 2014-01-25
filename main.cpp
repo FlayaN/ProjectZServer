@@ -4,7 +4,9 @@
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
+#include <regex>
 
+#include <SDL.h>
 #include <enet/enet.h>
 #include <curl/curl.h>
 
@@ -44,26 +46,50 @@ size_t writeToString(void *ptr, size_t size, size_t count, void *stream)
 	return size * count;
 }
 
+std::string doWebRequest(std::string url)
+{
+	CURL* curl_handle = NULL;
+	std::string response;
+
+	/* initializing curl and setting the url */
+	curl_handle = curl_easy_init();
+	curl_easy_setopt(curl_handle, CURLOPT_URL, url.c_str());
+	curl_easy_setopt(curl_handle, CURLOPT_HTTPGET, 1);
+
+	/* follow locations specified by the response header */
+	curl_easy_setopt(curl_handle, CURLOPT_FOLLOWLOCATION, 1);
+
+	/* setting a callback function to return the data */
+	curl_easy_setopt(curl_handle, CURLOPT_WRITEFUNCTION, writeToString);
+
+	/* passing the pointer to the response as the callback parameter */
+	curl_easy_setopt(curl_handle, CURLOPT_WRITEDATA, &response);
+
+	/* perform the request */
+	curl_easy_perform(curl_handle);
+
+	/* cleaning all curl stuff */
+	curl_easy_cleanup(curl_handle);
+
+	return response;
+}
+
 int  main(int argc, char ** argv)
 {
-	char* result;
-	CURL *curl;
-	CURLcode res;
-	std::string response;
-	curl = curl_easy_init();
-	
-	if(curl)
-	{
-		curl_easy_setopt(curl, CURLOPT_URL, "http://www.icanhazip.com/");
-		
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeToString);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response);
-		
-		res = curl_easy_perform(curl);
-		curl_easy_cleanup(curl);
-	}
+	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Event ev;
+	SDL_Window* win = SDL_CreateWindow("ProjectZ Server",  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_SWSURFACE);
 
-	std::cout << "Ip is: " << response << std::endl;
+	std::string ip = doWebRequest("http://icanhazip.com");
+	ip = std::regex_replace(ip,std::regex("\\s+"), "");
+	std::string name = "Hannes";
+	std::string description = "Hannes Server";
+
+	//std::regex space("[[:space:]]");
+	description = std::regex_replace(description, std::regex("[[:space:]]"), "%20");
+
+	std::cout << "Ip: " << ip << std::endl;
+	std::cout << "Response: " << doWebRequest("http://hannesf.com/ProjectZ/add.php?ip=" + ip + "&name=" + name + "&description=" + description) << std::endl;
 
 	int i;
 	
@@ -85,9 +111,17 @@ int  main(int argc, char ** argv)
 		return 0;
 	}
 
+	bool running = true;
+	bool shouldQuit = false;
 	
-	while(true) 
+	while(running)
 	{
+		while( SDL_PollEvent(&ev))
+		{
+			if(event.type == SDL_QUIT || ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
+				shouldQuit = true;
+        }
+
 		while(enet_host_service(server, &event, 1000) > 0)
 		{
 			switch(event.type)
@@ -153,6 +187,8 @@ int  main(int argc, char ** argv)
 				}
 			}
 		}
+		if(shouldQuit && doWebRequest("http://hannesf.com/ProjectZ/remove.php?ip=" + ip) == "success")
+			running = false;
 	}
 	enet_host_destroy(server);
 	enet_deinitialize();
