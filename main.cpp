@@ -116,12 +116,6 @@ int  main(int argc, char ** argv)
 	
 	while(running)
 	{
-		while( SDL_PollEvent(&ev))
-		{
-			if(event.type == SDL_QUIT || ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
-				shouldQuit = true;
-        }
-
 		while(enet_host_service(server, &event, 1000) > 0)
 		{
 			switch(event.type)
@@ -187,8 +181,19 @@ int  main(int argc, char ** argv)
 				}
 			}
 		}
-		if(shouldQuit && doWebRequest("http://hannesf.com/ProjectZ/remove.php?ip=" + ip) == "success")
+
+		while( SDL_PollEvent(&ev))
+		{
+			if(event.type == SDL_QUIT || ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
+				shouldQuit = true;
+        }
+
+		if(shouldQuit)
+		{
+			std::cout << "Started shutting down" << std::endl;
+			if(doWebRequest("http://hannesf.com/ProjectZ/remove.php?ip=" + ip) == "success")
 			running = false;
+		}
 	}
 	enet_host_destroy(server);
 	enet_deinitialize();
