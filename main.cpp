@@ -130,6 +130,7 @@ int  main(int argc, char ** argv)
 					
 					packet = enet_packet_create(buffer, strlen(buffer)+1, ENET_PACKET_FLAG_RELIABLE);
 					
+					std::cout << "Sending : " << buffer << std::endl;
 					enet_peer_send(event.peer, 0, packet);
 					enet_host_flush(server);
 					curId++;
