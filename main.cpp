@@ -1,3 +1,9 @@
+#ifdef __APPLE__
+    #include <SDL2/SDL.h>
+#else
+    #include <SDL.h>
+#endif
+
 #include <stdio.h>
 #include <string>
 #include <stdlib.h>
@@ -6,7 +12,6 @@
 #include <cstdlib>
 #include <regex>
 
-#include <SDL.h>
 #include <enet/enet.h>
 #include <curl/curl.h>
 
@@ -180,12 +185,17 @@ int  main(int argc, char ** argv)
 
 					break;
 				}
+                case ENET_EVENT_TYPE_NONE:
+                {
+                    std::cout << "Unkown packet" << std::endl;
+                    break;
+                }
 			}
 		}
 
 		while( SDL_PollEvent(&ev))
 		{
-			if(event.type == SDL_QUIT || ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE)
+			if(ev.type == SDL_QUIT || (ev.type == SDL_KEYDOWN && ev.key.keysym.sym == SDLK_ESCAPE))
 				shouldQuit = true;
         }
 
