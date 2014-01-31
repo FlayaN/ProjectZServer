@@ -10,6 +10,7 @@
 		975C84861892683B00A29D8D /* libenet.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 975C84851892683B00A29D8D /* libenet.2.dylib */; };
 		97643D8418927EA9003F320E /* main.cpp in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9766953918437EBE004E8ED6 /* main.cpp */; };
 		9766954118437EBE004E8ED6 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9766953918437EBE004E8ED6 /* main.cpp */; };
+		97E97B1618979A0D0068E69C /* libcurl.4.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 97E97B1518979A0D0068E69C /* libcurl.4.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +40,7 @@
 		975C84851892683B00A29D8D /* libenet.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libenet.2.dylib; path = lib/enet/lib/libenet.2.dylib; sourceTree = "<group>"; };
 		97643D85189280C2003F320E /* ProjectZServer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectZServer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9766953918437EBE004E8ED6 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		97E97B1518979A0D0068E69C /* libcurl.4.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.4.dylib; path = usr/lib/libcurl.4.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +48,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97E97B1618979A0D0068E69C /* libcurl.4.dylib in Frameworks */,
 				975C84861892683B00A29D8D /* libenet.2.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,6 +108,7 @@
 		9766950D18437968004E8ED6 = {
 			isa = PBXGroup;
 			children = (
+				97E97B1518979A0D0068E69C /* libcurl.4.dylib */,
 				975C84851892683B00A29D8D /* libenet.2.dylib */,
 				9766953918437EBE004E8ED6 /* main.cpp */,
 				975C81AC1892561000A29D8D /* lib */,
