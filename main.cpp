@@ -85,7 +85,6 @@ int  main(int argc, char ** argv)
 	std::string name = "Hannes";
 	std::string description = "Hannes Server";
 
-	//std::regex space("[[:space:]]");
 	description = std::regex_replace(description, std::regex("[[:space:]]"), "%20");
 
 	std::cout << "Ip: " << ip << std::endl;
@@ -122,19 +121,6 @@ int  main(int argc, char ** argv)
 			{
 				case ENET_EVENT_TYPE_CONNECT:
 				{
-					printf ("A new client connected from %x:%u.\n", event.peer->address.host, event.peer->address.port);
-
-					event.peer->data = new int(curId);
-
-					sprintf(buffer, "0 %d", curId);
-					
-					packet = enet_packet_create(buffer, strlen(buffer)+1, ENET_PACKET_FLAG_RELIABLE);
-					
-					std::cout << "Sending : " << buffer << std::endl;
-					enet_peer_send(event.peer, 0, packet);
-					enet_host_flush(server);
-					curId++;
-
 					break;
 				}
 
@@ -143,41 +129,60 @@ int  main(int argc, char ** argv)
 					int type, id;
 					sscanf((char*)event.packet->data, "%d %d", &type, &id);
 
-					//if(type != 1)
-					//	printf ("A packet of length %u containing %s was received from %d on channel %u.\n", event.packet->dataLength, event.packet->data, *(int*)event.peer->data, event.channelID);
-
 					switch (type)
 					{
-						case 1: //Data
+						case 0: //Join
+						{
+							std::cout << curId << " joined" << std::endl;
+							event.peer->data = new int(curId);
+
+							sprintf(buffer, "0 %d", curId);
+							packet = enet_packet_create(buffer, strlen(buffer)+1, ENET_PACKET_FLAG_RELIABLE);
+							enet_peer_send(event.peer, 0, packet);
+							enet_host_flush(server);
+							curId++;
+
+							break;
+						}
+						case 1: //Disconnect
+						{
+							std::cout << *(int*)event.peer->data << " disconected" << std::endl;
+
+							for(int i = 0; i < server->peerCount; i++)
+							{
+								sprintf(buffer, "1 %d", *(int*)event.peer->data);
+								packet = enet_packet_create(buffer, strlen(buffer)+1, ENET_PACKET_FLAG_RELIABLE);
+								enet_peer_send(&server->peers[i], 0, packet);
+								enet_host_flush(server);
+							}
+							event.peer->data = NULL;
+							break;
+						}
+						case 2: //Ping
+						{
+							enet_peer_send(event.peer, 0, event.packet);
+							enet_host_flush(server);
+							break;
+						}
+						case 3: //Data
 						{
 							sendToAllExceptId(id);
 							break;
 						}
-						case 3: //Message
+						case 4: //Message
 						{
 							sendToAll();
 							break;
 						}
 					}
 
-					enet_packet_destroy (event.packet);
+					//enet_packet_destroy (event.packet);
 
 					break;
 				}
 
 				case ENET_EVENT_TYPE_DISCONNECT:
 				{
-					printf ("%d disconected.\n", *(int*)event.peer->data);
-
-					for(int i = 0; i < server->peerCount; i++)
-					{
-						sprintf(buffer, "2 %d", *(int*)event.peer->data);
-						packet = enet_packet_create(buffer, strlen(buffer)+1, ENET_PACKET_FLAG_RELIABLE);
-						enet_peer_send(&server->peers[i], 0, packet);
-						enet_host_flush(server);
-					}
-					event.peer->data = NULL;
-
 					break;
 				}
 			}
