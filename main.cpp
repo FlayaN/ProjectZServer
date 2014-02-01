@@ -84,7 +84,6 @@ int main(int argc, char ** argv)
 	std::string name = doc["name"].GetString();
 	std::string description = doc["description"].GetString();
 
-
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_Event ev;
 	SDL_Window* win = SDL_CreateWindow("ProjectZ Server",  SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_SWSURFACE);
@@ -180,6 +179,16 @@ int main(int argc, char ** argv)
 						case 5: //Message
 						{
 							sendToAll(event.packet->data, event.packet->dataLength);
+							break;
+						}
+						case 6: //DropItem
+						{
+							sendToAll(event.packet->data, event.packet->dataLength);
+							break;
+						}
+						case 7: //PickupItem
+						{
+							sendToAllExceptId(id, event.packet->data, event.packet->dataLength);
 							break;
 						}
 						default:
