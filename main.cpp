@@ -72,6 +72,18 @@ void sendToId(int id, void* data, size_t length)
 	}
 }
 
+enum PacketType
+{
+	Join = 0,
+	Disconnect = 1,
+	Ping = 2,
+	PlayerCount = 3,
+	Data = 4,
+	Message = 5,
+	DropItem = 6,
+	PickupItem = 7
+};
+
 int main(int argc, char ** argv)
 {
 	std::string settingsServerPath = Utility::getBasePath() + "assets/config/settings/server.json";
@@ -139,7 +151,7 @@ int main(int argc, char ** argv)
 
 					switch (type)
 					{
-						case 0: //Join
+						case PacketType::Join:
 						{
 							std::cout << curId << " joined" << std::endl;
 							event.peer->data = new int(curId);
@@ -151,7 +163,7 @@ int main(int argc, char ** argv)
 
 							break;
 						}
-						case 1: //Disconnect
+						case PacketType::Disconnect:
 						{
 							std::cout << *(int*)event.peer->data << " disconected" << std::endl;
 							sprintf(buffer, "1 %d", *(int*)event.peer->data);
@@ -160,33 +172,33 @@ int main(int argc, char ** argv)
 							playerCount--;
 							break;
 						}
-						case 2: //Ping
+						case PacketType::Ping:
 						{
 							sendToSender(event.peer, event.packet->data, event.packet->dataLength);
 							break;
 						}
-						case 3: //PlayerCount
+						case PacketType::PlayerCount:
 						{
 							sprintf(buffer, "3 %d %d", playerCount, maxPlayers);
 							sendToSender(event.peer, buffer, sizeof(buffer)+1);
 							break;
 						}
-						case 4: //Data
+						case PacketType::Data:
 						{
 							sendToAllExceptId(id, event.packet->data, event.packet->dataLength);
 							break;
 						}
-						case 5: //Message
+						case PacketType::Message:
 						{
 							sendToAll(event.packet->data, event.packet->dataLength);
 							break;
 						}
-						case 6: //DropItem
+						case PacketType::DropItem:
 						{
 							sendToAll(event.packet->data, event.packet->dataLength);
 							break;
 						}
-						case 7: //PickupItem
+						case PacketType::PickupItem:
 						{
 							sendToAllExceptId(id, event.packet->data, event.packet->dataLength);
 							break;
